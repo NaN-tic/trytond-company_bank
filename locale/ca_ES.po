@@ -1,0 +1,23 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:bank.account-party.party,company:"
+msgid "Company"
+msgstr "Companyia"
+
+msgctxt "field:bank.account-party.party,payable_bank_account:"
+msgid "Default Payable Bank Account"
+msgstr "Compte bancari de pagament per defecte"
+
+msgctxt "field:bank.account-party.party,receivable_bank_account:"
+msgid "Default Receivable Bank Account"
+msgstr "Compte bancari de cobrament per defecte"
+
+msgctxt "field:party.party,payable_bank_account:"
+msgid "Default payable bank account"
+msgstr "Compte bancari de pagament per defecte"
+
+msgctxt "field:party.party,receivable_bank_account:"
+msgid "Default receivable bank account"
+msgstr "Compte bancari de cobrament per defecte"
