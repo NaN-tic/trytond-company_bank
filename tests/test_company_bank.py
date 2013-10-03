@@ -15,9 +15,9 @@ import trytond.tests.test_tryton
 from trytond.tests.test_tryton import test_view, test_depends
 
 
-class CompanyBlankTestCase(unittest.TestCase):
+class CompanyBankTestCase(unittest.TestCase):
     '''
-    Test Company Blank module.
+    Test Company Bank module.
     '''
 
     def setUp(self):
@@ -44,7 +44,7 @@ def suite():
         if test not in suite:
             suite.addTest(test)
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        CompanyBlankTestCase))
+        CompanyBankTestCase))
     return suite
 
 if __name__ == '__main__':
