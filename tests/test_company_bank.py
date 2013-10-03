@@ -22,7 +22,6 @@ class CompanyBankTestCase(unittest.TestCase):
 
     def setUp(self):
         trytond.tests.test_tryton.install_module('company_bank')
-        self.party = POOL.get('party.party')
 
     def test0005views(self):
         '''
