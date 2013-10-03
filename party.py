@@ -15,12 +15,12 @@ class Party:
     payable_bank_account = fields.Function(fields.Many2One('bank.account',
             'Default payable bank account', domain=[
                 ('owners', '=', Eval('id')),
-                ], depends=['bank_accounts']),
+                ], depends=['id']),
         'get_bank_account', setter='set_bank_accounts')
     receivable_bank_account = fields.Function(fields.Many2One('bank.account',
             'Default receivable bank account', domain=[
                 ('owners', '=', Eval('id')),
-                ], depends=['bank_accounts']),
+                ], depends=['id']),
         'get_bank_account', setter='set_bank_accounts')
 
     def get_bank_account(self, name):
