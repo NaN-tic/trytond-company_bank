@@ -64,11 +64,3 @@ class Party:
                     else:
                         vals = {name: False}
                     BankAccountParty.write([account], vals)
-
-    def get_payable_bank_account(self):
-        BankAccount = Pool().get('bank.account')
-        return BankAccount(self.payable_bank_account)
-
-    def get_receivable_bank_account(self):
-        BankAccount = Pool().get('bank.account')
-        return BankAccount(self.receivable_bank_account)
