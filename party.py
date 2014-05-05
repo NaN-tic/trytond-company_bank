@@ -1,17 +1,55 @@
 #This file is part of company_bank module for Tryton.
 #The COPYRIGHT file at the top level of this repository contains
 #the full copyright notices and license terms.
-from trytond.model import fields
+from trytond.model import fields, ModelSQL
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
 
-__all__ = ['Party']
+__all__ = ['PartyCompanyBankAccount', 'Party']
 __metaclass__ = PoolMeta
+
+
+class PartyCompanyBankAccount(ModelSQL):
+    'Company Bank Account per Party'
+    __name__ = 'party.party-company.company'
+
+    company = fields.Many2One('company.company', 'Company', required=True)
+    company_party = fields.Function(fields.Many2One('party.party',
+            'Company Party'), 'get_company_party')
+    party = fields.Many2One('party.party', 'Party', required=True)
+    receivable_bank_account = fields.Many2One('bank.account',
+        'Receivable bank account',
+        domain=[
+            ('owners', '=', Eval('company_party')),
+        ],
+        depends=['company_party'])
+    payable_bank_account = fields.Many2One('bank.account',
+        'Payable bank account',
+        domain=[
+            ('owners', '=', Eval('company_party')),
+        ],
+        depends=['company_party'])
+
+    @classmethod
+    def __setup__(cls):
+        super(PartyCompanyBankAccount, cls).__setup__()
+        cls._sql_constraints += [
+            ('company_party_uniq', 'unique (company, party)',
+                'unique_company_party')
+            ]
+        cls._error_messages.update({
+                'unique_company_party': 'Party must be unique per company.',
+                })
+
+    def get_company_party(self, name=None):
+        return self.company.party.id
 
 
 class Party:
     __name__ = 'party.party'
+    company_party = fields.Function(fields.Many2One('party.party',
+            'Company Party'), 'get_company_party')
     payable_bank_account = fields.Function(fields.Many2One('bank.account',
             'Default payable bank account', domain=[
                 ('owners', '=', Eval('id')),
@@ -22,6 +60,29 @@ class Party:
                 ('owners', '=', Eval('id')),
                 ], depends=['id']),
         'get_bank_account', setter='set_bank_accounts')
+    payable_company_bank_account = fields.Function(
+        fields.Many2One('bank.account',
+            'Default company payable bank account', domain=[
+                ('owners', '=', Eval('company_party')),
+                ], depends=['company_party']),
+        'get_company_bank_account', setter='set_company_bank_accounts')
+    receivable_company_bank_account = fields.Function(
+        fields.Many2One('bank.account',
+            'Default company receivable bank account', domain=[
+                ('owners', '=', Eval('company_party')),
+                ], depends=['company_party']),
+        'get_company_bank_account', setter='set_company_bank_accounts')
+
+    @classmethod
+    def default_company_party(cls):
+        Company = Pool().get('company.company')
+        company_id = Transaction().context.get('company')
+        if company_id:
+            company = Company(company_id)
+            return company.party.id
+
+    def get_company_party(self, name):
+        return self.default_company_party()
 
     def get_bank_account(self, name):
         BankAccountParty = Pool().get('bank.account-party.party')
@@ -64,3 +125,51 @@ class Party:
                     else:
                         vals = {name: False}
                     BankAccountParty.write([account], vals)
+
+    @classmethod
+    def get_company_bank_account(cls, parties, names):
+        CompanyBankAccount = Pool().get('party.party-company.company')
+        company = Transaction().context.get('company')
+        party_ids = [p.id for p in parties]
+        res = {}
+        res['receivable_company_bank_account'] = {}.fromkeys(party_ids)
+        res['payable_company_bank_account'] = {}.fromkeys(party_ids)
+        if company:
+            accounts = CompanyBankAccount.search([
+                ('company', '=', company),
+                ('party', 'in', party_ids),
+                ])
+            for account in accounts:
+                party_id = account.party.id
+                for name in ['receivable', 'payable']:
+                    value = getattr(account, '%s_bank_account' % name)
+                    if value:
+                        res['%s_company_bank_account' % name][party_id] = (
+                            value.id)
+        for key in res.keys():
+            if key not in names:
+                del res[key]
+        return res
+
+    @classmethod
+    def set_company_bank_accounts(cls, parties, name, value):
+        CompanyBankAccount = Pool().get('party.party-company.company')
+        company = Transaction().context.get('company')
+        to_create = []
+        name = name.replace('_company', '')
+        if company:
+            for party in parties:
+                accounts = CompanyBankAccount.search([
+                        ('company', '=', company),
+                        ('party', '=', party),
+                        ])
+                if accounts:
+                    CompanyBankAccount.write(accounts, {name: value})
+                else:
+                    to_create.append({
+                            'company': company,
+                            'party': party.id,
+                            name: value,
+                            })
+        if to_create:
+            CompanyBankAccount.create(to_create)

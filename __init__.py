@@ -9,5 +9,6 @@ from .party import *
 def register():
     Pool.register(
         BankAccountParty,
+        PartyCompanyBankAccount,
         Party,
         module='company_bank', type_='model')
