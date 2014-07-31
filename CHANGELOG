@@ -1,0 +1,10 @@
+* Fix party deletion, deleting also the default bank accounts
+
+Version 3.2.0 - 2014-05-22
+*Allow to define the default bank account of the company per party
+
+Version 3.0.0 - 2013-10-25
+* Bug fixes (See mercurial log for details)
+
+Version 2.8.0 - 2013-07-17
+* Initial commit

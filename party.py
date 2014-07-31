@@ -14,10 +14,12 @@ class PartyCompanyBankAccount(ModelSQL):
     'Company Bank Account per Party'
     __name__ = 'party.party-company.company'
 
-    company = fields.Many2One('company.company', 'Company', required=True)
+    company = fields.Many2One('company.company', 'Company', required=True,
+        ondelete='CASCADE')
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party'), 'get_company_party')
-    party = fields.Many2One('party.party', 'Party', required=True)
+    party = fields.Many2One('party.party', 'Party', required=True,
+        ondelete='CASCADE')
     receivable_bank_account = fields.Many2One('bank.account',
         'Receivable bank account',
         domain=[
