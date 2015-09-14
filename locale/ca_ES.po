@@ -52,15 +52,15 @@ msgstr "Tercer de l'empresa"
 
 msgctxt "field:party.party-company.company,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:party.party-company.company,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:party.party-company.company,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:party.party-company.company,party:"
 msgid "Party"
