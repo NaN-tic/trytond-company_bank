@@ -1,7 +1,7 @@
 #This file is part of company_bank module for Tryton.
 #The COPYRIGHT file at the top level of this repository contains
 #the full copyright notices and license terms.
-from trytond.model import fields, ModelSQL
+from trytond.model import fields, ModelSQL, Unique
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
@@ -36,8 +36,9 @@ class PartyCompanyBankAccount(ModelSQL):
     @classmethod
     def __setup__(cls):
         super(PartyCompanyBankAccount, cls).__setup__()
+        t = cls.__table__()
         cls._sql_constraints += [
-            ('company_party_uniq', 'unique (company, party)',
+            ('company_party_uniq', Unique(t, t.company, t.party),
                 'unique_company_party')
             ]
         cls._error_messages.update({
