@@ -32,7 +32,7 @@ msgstr "Compte bancari de pagament per defecte"
 
 msgctxt "field:party.party,payable_company_bank_account:"
 msgid "Default company payable bank account"
-msgstr "Compte bancari de la compania de pagament per defecte"
+msgstr "Compte bancari de la companyia de pagament per defecte"
 
 msgctxt "field:party.party,receivable_bank_account:"
 msgid "Default receivable bank account"
@@ -40,7 +40,7 @@ msgstr "Compte bancari de cobrament per defecte"
 
 msgctxt "field:party.party,receivable_company_bank_account:"
 msgid "Default company receivable bank account"
-msgstr "Compte bancari de la compania de cobrament per defecte"
+msgstr "Compte bancari de la companyia de cobrament per defecte"
 
 msgctxt "field:party.party-company.company,company:"
 msgid "Company"
