@@ -4,7 +4,7 @@ msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:party.party-company.company:"
 msgid "Party must be unique per company."
-msgstr "El tercero debe ser único por empresa"
+msgstr "El tercero debe ser único por empresa."
 
 msgctxt "error:party.party-company.company:"
 msgid "unique_company_party"
