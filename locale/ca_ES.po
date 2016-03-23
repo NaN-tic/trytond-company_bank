@@ -4,7 +4,7 @@ msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:party.party-company.company:"
 msgid "Party must be unique per company."
-msgstr "El tercer ha de ser únic per companyia"
+msgstr "El tercer ha de ser únic per empresa."
 
 msgctxt "error:party.party-company.company:"
 msgid "unique_company_party"
@@ -12,7 +12,7 @@ msgstr "unique_company_party"
 
 msgctxt "field:bank.account-party.party,company:"
 msgid "Company"
-msgstr "Companyia"
+msgstr "Empresa"
 
 msgctxt "field:bank.account-party.party,payable_bank_account:"
 msgid "Default Payable Bank Account"
@@ -32,7 +32,7 @@ msgstr "Compte bancari de pagament per defecte"
 
 msgctxt "field:party.party,payable_company_bank_account:"
 msgid "Default company payable bank account"
-msgstr "Compte bancari de la companyia de pagament per defecte"
+msgstr "Compte bancari de l'empresa de pagament per defecte"
 
 msgctxt "field:party.party,receivable_bank_account:"
 msgid "Default receivable bank account"
@@ -40,7 +40,7 @@ msgstr "Compte bancari de cobrament per defecte"
 
 msgctxt "field:party.party,receivable_company_bank_account:"
 msgid "Default company receivable bank account"
-msgstr "Compte bancari de la companyia de cobrament per defecte"
+msgstr "Compte bancari de l'empresa de cobrament per defecte"
 
 msgctxt "field:party.party-company.company,company:"
 msgid "Company"
@@ -52,15 +52,15 @@ msgstr "Tercer de l'empresa"
 
 msgctxt "field:party.party-company.company,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:party.party-company.company,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:party.party-company.company,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:party.party-company.company,party:"
 msgid "Party"
@@ -88,4 +88,4 @@ msgstr "Usuari modificació"
 
 msgctxt "model:party.party-company.company,name:"
 msgid "Company Bank Account per Party"
-msgstr "Compte bancari de la companyia per tercer"
+msgstr "Compte bancari de l'empresa per tercer"
