@@ -7,7 +7,6 @@ from trytond.pyson import Eval
 from trytond.transaction import Transaction
 
 __all__ = ['PartyCompanyBankAccount', 'Party']
-__metaclass__ = PoolMeta
 
 
 class PartyCompanyBankAccount(ModelSQL):
@@ -50,6 +49,7 @@ class PartyCompanyBankAccount(ModelSQL):
 
 
 class Party:
+    __metaclass__ = PoolMeta
     __name__ = 'party.party'
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party'), 'get_company_party')

@@ -6,10 +6,10 @@ from trytond.pool import PoolMeta
 from trytond.transaction import Transaction
 
 __all__ = ['BankAccountParty']
-__metaclass__ = PoolMeta
 
 
 class BankAccountParty:
+    __metaclass__ = PoolMeta
     __name__ = 'bank.account-party.party'
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
         required=True)
