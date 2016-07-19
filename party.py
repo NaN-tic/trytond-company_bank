@@ -48,6 +48,15 @@ class PartyCompanyBankAccount(ModelSQL):
     def get_company_party(self, name=None):
         return self.company.party.id
 
+    @classmethod
+    def delete_when_empty(cls, accounts):
+        accounts_to_delete = []
+        for account in accounts:
+            if not account.payable_bank_account and not account.receivable_bank_account:
+                accounts_to_delete.append(account)
+        if accounts_to_delete:
+            cls.delete(accounts_to_delete)
+
 
 class Party:
     __name__ = 'party.party'
@@ -168,6 +177,7 @@ class Party:
                         ])
                 if accounts:
                     CompanyBankAccount.write(accounts, {name: value})
+                    CompanyBankAccount.delete_when_empty(accounts)
                 else:
                     to_create.append({
                             'company': company,
