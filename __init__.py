@@ -8,6 +8,7 @@ from .party import *
 
 def register():
     Pool.register(
+        BankAccount,
         BankAccountParty,
         PartyCompanyBankAccount,
         Party,

@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -21,6 +21,10 @@ msgstr "Compte bancari de pagament per defecte"
 msgctxt "field:bank.account-party.party,receivable_bank_account:"
 msgid "Default Receivable Bank Account"
 msgstr "Compte bancari de cobrament per defecte"
+
+msgctxt "field:party.party,bank_accounts_readonly:"
+msgid "Default Accounts Readonly"
+msgstr "Comptes per defecte només lectura"
 
 msgctxt "field:party.party,company_party:"
 msgid "Company Party"

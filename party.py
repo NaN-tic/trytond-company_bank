@@ -62,15 +62,30 @@ class Party:
     __name__ = 'party.party'
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party'), 'get_company_party')
+    bank_accounts_readonly = fields.Function(fields.Boolean(
+            'Default Accounts Readonly'),
+        'on_change_with_bank_accounts_readonly')
     payable_bank_account = fields.Function(fields.Many2One('bank.account',
-            'Default payable bank account', domain=[
+            'Default payable bank account',
+            domain=[
+                ('active', '=', True),
                 ('owners', '=', Eval('id')),
-                ], depends=['id']),
+                ],
+            states={
+                'readonly': Eval('bank_accounts_readonly', False),
+                },
+            depends=['id', 'bank_accounts_readonly']),
         'get_bank_account', setter='set_bank_accounts')
     receivable_bank_account = fields.Function(fields.Many2One('bank.account',
-            'Default receivable bank account', domain=[
+            'Default receivable bank account',
+            domain=[
+                ('active', '=', True),
                 ('owners', '=', Eval('id')),
-                ], depends=['id']),
+                ],
+            states={
+                'readonly': Eval('bank_accounts_readonly', False),
+                },
+            depends=['id', 'bank_accounts_readonly']),
         'get_bank_account', setter='set_bank_accounts')
     payable_company_bank_account = fields.Function(
         fields.Many2One('bank.account',
@@ -92,6 +107,15 @@ class Party:
         if company_id:
             company = Company(company_id)
             return company.party.id
+
+    @classmethod
+    def default_bank_accounts_readonly(cls):
+        return True
+
+    @fields.depends('bank_accounts')
+    def on_change_with_bank_accounts_readonly(self, name=None):
+        active_accounts = [ba for ba in self.bank_accounts if ba.active]
+        return len(active_accounts) < 2
 
     def get_company_party(self, name):
         return self.default_company_party()
@@ -186,3 +210,22 @@ class Party:
                             })
         if to_create:
             CompanyBankAccount.create(to_create)
+
+    @classmethod
+    def set_default_bank_accounts(cls, parties):
+        for party in parties:
+            if (party.receivable_bank_account
+                    and not party.receivable_bank_account.active):
+                party.receivable_bank_account = None
+            if (party.payable_bank_account
+                    and not party.payable_bank_account.active):
+                party.payable_bank_account = None
+            active_accounts = [ba for ba in party.bank_accounts if ba.active]
+            if not active_accounts:
+                party.receivable_bank_account = None
+                party.payable_bank_account = None
+            elif len(active_accounts) == 1:
+                account, = active_accounts
+                party.receivable_bank_account = account
+                party.payable_bank_account = account
+        cls.save(parties)
