@@ -114,7 +114,10 @@ class Party:
 
     @fields.depends('bank_accounts')
     def on_change_with_bank_accounts_readonly(self, name=None):
-        active_accounts = [ba for ba in self.bank_accounts if ba.active]
+        pool = Pool()
+        BankAccount = pool.get('bank.account')
+        active_accounts = [ba for ba in self.bank_accounts
+            if getattr(ba, 'active', BankAccount.default_active())]
         return len(active_accounts) < 2
 
     def get_company_party(self, name):
