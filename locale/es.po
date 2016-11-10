@@ -56,15 +56,15 @@ msgstr "Tercero de la empresa"
 
 msgctxt "field:party.party-company.company,create_date:"
 msgid "Create Date"
-msgstr "Fecha creación"
+msgstr "Fecha de creación"
 
 msgctxt "field:party.party-company.company,create_uid:"
 msgid "Create User"
-msgstr "Usuario creación"
+msgstr "Usuario de creación"
 
 msgctxt "field:party.party-company.company,id:"
 msgid "ID"
-msgstr "ID"
+msgstr "Identificador"
 
 msgctxt "field:party.party-company.company,party:"
 msgid "Party"
@@ -84,11 +84,11 @@ msgstr "Cuenta bancaria a cobrar"
 
 msgctxt "field:party.party-company.company,write_date:"
 msgid "Write Date"
-msgstr "Fecha modificación"
+msgstr "Fecha de modificación"
 
 msgctxt "field:party.party-company.company,write_uid:"
 msgid "Write User"
-msgstr "Usuario modificación"
+msgstr "Usuario de modificación"
 
 msgctxt "model:party.party-company.company,name:"
 msgid "Company Bank Account per Party"
