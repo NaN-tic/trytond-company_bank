@@ -4,14 +4,8 @@ The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <data>
     <xpath expr="/form/notebook/page[@id='banking']/field[@name='bank_accounts']"
-        position="before">
-        <label name="receivable_bank_account"/>
-        <field name="receivable_bank_account"/>
-        <label name="payable_bank_account"/>
-        <field name="payable_bank_account"/>
-        <label name="receivable_company_bank_account"/>
-        <field name="receivable_company_bank_account"/>
-        <label name="payable_company_bank_account"/>
-        <field name="payable_company_bank_account"/>
+        position="after">
+        <field name="company_default_bank_accounts" colspan="4"
+            view_ids="company_bank.default_bank_account_view_tree_sequence,company_bank.default_bank_account_view_form"/>
     </xpath>
 </data>

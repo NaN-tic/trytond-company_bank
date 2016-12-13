@@ -1,235 +1,109 @@
 # This file is part of company_bank module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-from trytond.model import fields, ModelSQL, Unique
-from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Eval
+from trytond.model import fields, ModelSQL, ModelView, MatchMixin,\
+    sequence_ordered
+from trytond.pool import PoolMeta
+from trytond.pyson import Eval, Len
 from trytond.transaction import Transaction
 
-__all__ = ['PartyCompanyBankAccount', 'Party']
+__all__ = ['PartyDefaultBankAccount', 'Party']
 
 
-class PartyCompanyBankAccount(ModelSQL):
-    'Company Bank Account per Party'
-    __name__ = 'party.party-company.company'
+class PartyDefaultBankAccount(sequence_ordered(), ModelSQL, ModelView,
+        MatchMixin):
+    'Party Default Bank Account'
+    __name__ = 'party.party.default.bank_account'
 
-    company = fields.Many2One('company.company', 'Company', required=True,
-        ondelete='CASCADE')
-    company_party = fields.Function(fields.Many2One('party.party',
-            'Company Party'), 'get_company_party')
     party = fields.Many2One('party.party', 'Party', required=True,
         ondelete='CASCADE')
-    receivable_bank_account = fields.Many2One('bank.account',
-        'Receivable bank account',
+    company = fields.Many2One('company.company', 'Company')
+    kind = fields.Selection([
+            (None, ''),
+            ('payable', 'Payable'),
+            ('receivable', 'Receivable'),
+            ], 'Kind')
+    bank_account_owner = fields.Function(fields.Many2One(
+            'party.party', 'Bank Account Owner'),
+        'on_change_with_bank_account_owner')
+    bank_account = fields.Many2One('bank.account', 'Bank Account',
+        required=True, ondelete='CASCADE',
         domain=[
-            ('owners', '=', Eval('company_party')),
+            ('owners', '=', Eval('bank_account_owner')),
         ],
-        depends=['company_party'])
-    payable_bank_account = fields.Many2One('bank.account',
-        'Payable bank account',
-        domain=[
-            ('owners', '=', Eval('company_party')),
-        ],
-        depends=['company_party'])
+        depends=['bank_account_owner'])
+    active = fields.Function(fields.Boolean('Active'),
+        'get_active', searcher='search_active')
 
     @classmethod
-    def __setup__(cls):
-        super(PartyCompanyBankAccount, cls).__setup__()
-        t = cls.__table__()
-        cls._sql_constraints += [
-            ('company_party_uniq', Unique(t, t.company, t.party),
-                'unique_company_party')
-            ]
-        cls._error_messages.update({
-                'unique_company_party': 'Party must be unique per company.',
-                })
+    def default_company(cls):
+        return Transaction().context.get('company')
 
-    def get_company_party(self, name=None):
-        return self.company.party.id
+    @fields.depends('party')
+    def on_change_with_bank_account_owner(self, name=None):
+        if self.party:
+            return self.party.id
+
+    def get_active(self, name):
+        return self.bank_account.active
 
     @classmethod
-    def delete_when_empty(cls, accounts):
-        accounts_to_delete = []
-        for account in accounts:
-            if (not account.payable_bank_account
-                    and not account.receivable_bank_account):
-                accounts_to_delete.append(account)
-        if accounts_to_delete:
-            cls.delete(accounts_to_delete)
+    def search_active(cls, name, clause):
+        return [('bank_account.active',) + tuple(clause[1:])]
 
 
 class Party:
     __metaclass__ = PoolMeta
     __name__ = 'party.party'
-    company_party = fields.Function(fields.Many2One('party.party',
-            'Company Party'), 'get_company_party')
-    bank_accounts_readonly = fields.Function(fields.Boolean(
-            'Default Accounts Readonly'),
-        'on_change_with_bank_accounts_readonly')
-    payable_bank_account = fields.Function(fields.Many2One('bank.account',
-            'Default payable bank account',
+    default_bank_accounts = fields.One2Many('party.party.default.bank_account',
+        'party', 'Default Bank Accounts',
+        states={
+            'invisible': Len(Eval('bank_accounts', [])) < 2,
+            },
+        depends=['bank_accounts'])
+    company_default_bank_accounts = fields.Function(
+        fields.One2Many('party.party.default.bank_account',
+            'party', 'Default Bank Accounts',
             domain=[
-                ('active', '=', True),
-                ('owners', '=', Eval('id')),
+                ('company', 'in',
+                    [None, Eval('context', {}).get('company', -1)]),
                 ],
             states={
-                'readonly': Eval('bank_accounts_readonly', False),
+                'invisible': Len(Eval('bank_accounts', [])) < 2,
                 },
-            depends=['id', 'bank_accounts_readonly']),
-        'get_bank_account', setter='set_bank_accounts')
-    receivable_bank_account = fields.Function(fields.Many2One('bank.account',
-            'Default receivable bank account',
-            domain=[
-                ('active', '=', True),
-                ('owners', '=', Eval('id')),
-                ],
-            states={
-                'readonly': Eval('bank_accounts_readonly', False),
-                },
-            depends=['id', 'bank_accounts_readonly']),
-        'get_bank_account', setter='set_bank_accounts')
-    payable_company_bank_account = fields.Function(
-        fields.Many2One('bank.account',
-            'Default company payable bank account', domain=[
-                ('owners', '=', Eval('company_party')),
-                ], depends=['company_party']),
-        'get_company_bank_account', setter='set_company_bank_accounts')
-    receivable_company_bank_account = fields.Function(
-        fields.Many2One('bank.account',
-            'Default company receivable bank account', domain=[
-                ('owners', '=', Eval('company_party')),
-                ], depends=['company_party']),
-        'get_company_bank_account', setter='set_company_bank_accounts')
+            depends=['bank_accounts']),
+        'get_company_default_bank_accounts',
+        setter='set_company_default_bank_accounts')
+
+    def get_company_default_bank_accounts(self, name):
+        company = Transaction().context.get('company', -1)
+        return [d.id for d in self.default_bank_accounts if
+            (not d.company or d.company.id == company)]
 
     @classmethod
-    def default_company_party(cls):
-        Company = Pool().get('company.company')
-        company_id = Transaction().context.get('company')
-        if company_id:
-            company = Company(company_id)
-            return company.party.id
+    def set_company_default_bank_accounts(cls, parties, name, value):
+        cls.write(parties, {'default_bank_accounts': value})
 
-    @classmethod
-    def default_bank_accounts_readonly(cls):
-        return True
+    def get_default_bank_account(self, pattern=None):
+        'Get the default bank account of a party'
+        context = Transaction().context
+        if pattern is None:
+            pattern = {}
 
-    @fields.depends('bank_accounts')
-    def on_change_with_bank_accounts_readonly(self, name=None):
-        pool = Pool()
-        BankAccount = pool.get('bank.account')
-        active_accounts = [ba for ba in self.bank_accounts
-            if getattr(ba, 'active', BankAccount.default_active())]
-        return len(active_accounts) < 2
+        pattern = pattern.copy()
+        if 'company' in context:
+            pattern.setdefault('company', context['company'])
 
-    def get_company_party(self, name):
-        return self.default_company_party()
-
-    def get_bank_account(self, name):
-        BankAccountParty = Pool().get('bank.account-party.party')
-        company = Transaction().context.get('company')
-        if company:
-            accounts = BankAccountParty.search([
-                ('company', '=', company),
-                ('owner', '=', self.id),
-                (name, '=', True),
-                ])
-            for account in accounts:
-                return account.account.id
-
-    @classmethod
-    def set_bank_accounts(cls, parties, name, value):
-        BankAccountParty = Pool().get('bank.account-party.party')
-        BankAccount = Pool().get('bank.account')
-        company = Transaction().context.get('company')
-        if company:
-            for party in parties:
-                accounts = BankAccountParty.search([
-                    ('company', '=', company),
-                    ('owner', '=', party.id),
-                    ])
-                bank_accounts = [x.account.id for x in accounts]
-                if value and (not accounts or value not in bank_accounts):
-                    account, = BankAccount.search([
-                            ('id', '=', value),
-                            ])
-                    vlist = [{
-                            'account': account,
-                            'owner': party,
-                            'company': company,
-                            name: True,
-                            }]
-                    BankAccountParty.create(vlist)
-                for account in accounts:
-                    if account.account.id == value:
-                        vals = {name: True}
-                    else:
-                        vals = {name: False}
-                    BankAccountParty.write([account], vals)
-
-    @classmethod
-    def get_company_bank_account(cls, parties, names):
-        CompanyBankAccount = Pool().get('party.party-company.company')
-        company = Transaction().context.get('company')
-        party_ids = [p.id for p in parties]
-        res = {}
-        res['receivable_company_bank_account'] = {}.fromkeys(party_ids)
-        res['payable_company_bank_account'] = {}.fromkeys(party_ids)
-        if company:
-            accounts = CompanyBankAccount.search([
-                ('company', '=', company),
-                ('party', 'in', party_ids),
-                ])
-            for account in accounts:
-                party_id = account.party.id
-                for name in ['receivable', 'payable']:
-                    value = getattr(account, '%s_bank_account' % name)
-                    if value:
-                        res['%s_company_bank_account' % name][party_id] = (
-                            value.id)
-        for key in res.keys():
-            if key not in names:
-                del res[key]
-        return res
-
-    @classmethod
-    def set_company_bank_accounts(cls, parties, name, value):
-        CompanyBankAccount = Pool().get('party.party-company.company')
-        company = Transaction().context.get('company')
-        to_create = []
-        name = name.replace('_company', '')
-        if company:
-            for party in parties:
-                accounts = CompanyBankAccount.search([
-                        ('company', '=', company),
-                        ('party', '=', party),
-                        ])
-                if accounts:
-                    CompanyBankAccount.write(accounts, {name: value})
-                    CompanyBankAccount.delete_when_empty(accounts)
-                else:
-                    to_create.append({
-                            'company': company,
-                            'party': party.id,
-                            name: value,
-                            })
-        if to_create:
-            CompanyBankAccount.create(to_create)
-
-    @classmethod
-    def set_default_bank_accounts(cls, parties):
-        for party in parties:
-            if (party.receivable_bank_account
-                    and not party.receivable_bank_account.active):
-                party.receivable_bank_account = None
-            if (party.payable_bank_account
-                    and not party.payable_bank_account.active):
-                party.payable_bank_account = None
-            active_accounts = [ba for ba in party.bank_accounts if ba.active]
-            if not active_accounts:
-                party.receivable_bank_account = None
-                party.payable_bank_account = None
-            elif len(active_accounts) == 1:
-                account, = active_accounts
-                party.receivable_bank_account = account
-                party.payable_bank_account = account
-        cls.save(parties)
+        bank_account = None
+        for line in self.default_bank_accounts:
+            if line.match(pattern):
+                bank_account = line.bank_account
+                break
+        if not bank_account and len(self.bank_accounts) == 1:
+            bank_account = self.bank_accounts[0]
+            if 'bank_account_owner' in pattern:
+                owner = pattern['bank_account_owner']
+                # Clear if owner is not applicable
+                if owner not in [o.id for o in bank_account.owners]:
+                    bank_account = None
+        return bank_account

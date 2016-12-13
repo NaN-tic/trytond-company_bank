@@ -20,6 +20,7 @@ class CompanyBankTestCase(ModuleTestCase):
         Party = pool.get('party.party')
         Bank = pool.get('bank')
         Account = pool.get('bank.account')
+        DefaultBank = pool.get('party.party.default.bank_account')
 
         company = create_company()
         with set_company(company):
@@ -27,6 +28,8 @@ class CompanyBankTestCase(ModuleTestCase):
             party.save()
             bank = Bank(party=party)
             bank.save()
+            owner = Party(name='Owner')
+            owner.save()
             account, = Account.create([{
                         'bank': bank.id,
                         'numbers': [('create', [{
@@ -34,17 +37,10 @@ class CompanyBankTestCase(ModuleTestCase):
                                         'number': 'not IBAN',
                                         }])],
                         }])
-            owner = Party(name='Owner')
-            owner.save()
-            self.assertIsNone(owner.payable_bank_account)
-            self.assertIsNone(owner.receivable_bank_account)
-            self.assertTrue(owner.bank_accounts_readonly)
+            self.assertIsNone(owner.get_default_bank_account())
             account.owners = [owner]
             account.save()
-            owner = Party(owner.id)
-            self.assertEqual(owner.payable_bank_account, account)
-            self.assertEqual(owner.receivable_bank_account, account)
-            self.assertTrue(owner.bank_accounts_readonly)
+            self.assertEqual(owner.get_default_bank_account(), account)
             new_account, = Account.create([{
                         'bank': bank.id,
                         'owners': [('add', [owner.id])],
@@ -53,22 +49,34 @@ class CompanyBankTestCase(ModuleTestCase):
                                         'number': 'Another not IBAN',
                                         }])],
                         }])
+            self.assertIsNone(owner.get_default_bank_account())
+            DefaultBank.create([{
+                        'party': owner.id,
+                        'bank_account': account.id,
+                        'kind': 'receivable',
+                        'sequence': 1,
+                        }, {
+                        'party': owner.id,
+                        'bank_account': new_account.id,
+                        'kind': 'payable',
+                        'sequence': 2,
+                        }])
             owner = Party(owner.id)
-            self.assertEqual(owner.payable_bank_account, account)
-            self.assertEqual(owner.receivable_bank_account, account)
-            self.assertFalse(owner.bank_accounts_readonly)
+            self.assertEqual(owner.get_default_bank_account(), account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'receivable'}),
+                account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'payable'}),
+                new_account)
             Account.delete([account])
-            owner = Party(owner.id)
-            self.assertEqual(owner.payable_bank_account, new_account)
-            self.assertEqual(owner.receivable_bank_account, new_account)
-            self.assertTrue(owner.bank_accounts_readonly)
-            new_account.owners = []
-            new_account.save()
-            self.assertIsNone(owner.payable_bank_account)
-            self.assertIsNone(owner.receivable_bank_account)
-            self.assertTrue(owner.bank_accounts_readonly)
-            new_account.owners = [owner]
-            new_account.save()
+            self.assertEqual(owner.get_default_bank_account(), new_account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'receivable'}),
+                new_account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'payable'}),
+                new_account)
             account, = Account.create([{
                         'bank': bank.id,
                         'owners': [('add', [owner.id])],
@@ -77,19 +85,27 @@ class CompanyBankTestCase(ModuleTestCase):
                                         'number': 'Yet Another not IBAN',
                                         }])],
                         }])
-            self.assertEqual(owner.payable_bank_account, new_account)
-            self.assertEqual(owner.receivable_bank_account, new_account)
-            self.assertFalse(owner.bank_accounts_readonly)
+            DefaultBank.create([{
+                        'party': owner.id,
+                        'bank_account': account.id,
+                        'sequence': 3,
+                        }])
+            self.assertEqual(owner.get_default_bank_account(), new_account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'receivable'}),
+                account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'payable'}),
+                new_account)
             new_account.active = False
             new_account.save()
-            self.assertEqual(owner.payable_bank_account, account)
-            self.assertEqual(owner.receivable_bank_account, account)
-            self.assertTrue(owner.bank_accounts_readonly)
-            account.active = False
-            account.save()
-            self.assertIsNone(owner.payable_bank_account)
-            self.assertIsNone(owner.receivable_bank_account)
-            self.assertTrue(owner.bank_accounts_readonly)
+            self.assertEqual(owner.get_default_bank_account(), account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'receivable'}),
+                account)
+            self.assertEqual(
+                owner.get_default_bank_account(pattern={'kind': 'payable'}),
+                account)
 
 
 def suite():

@@ -2,14 +2,13 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.pool import Pool
-from .bank import *
-from .party import *
+from . import bank
+from . import party
 
 
 def register():
     Pool.register(
-        BankAccount,
-        BankAccountParty,
-        PartyCompanyBankAccount,
-        Party,
+        party.PartyDefaultBankAccount,
+        bank.BankAccountParty,
+        party.Party,
         module='company_bank', type_='model')

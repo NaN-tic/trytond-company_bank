@@ -1,9 +1,27 @@
 <?xml version="1.0"?>
 <!-- This file is part of company_bank module for Tryton.
-The COPYRIGHT file at the top level of this repository contains the full 
+The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <tryton>
     <data>
+        <record model="ir.ui.view" id="default_bank_account_view_tree">
+            <field name="model">party.party.default.bank_account</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="10"/>
+            <field name="name">default_bank_account_tree</field>
+        </record>
+        <record model="ir.ui.view"
+            id="default_bank_account_view_tree_sequence">
+            <field name="model">party.party.default.bank_account</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="20"/>
+            <field name="name">default_bank_account_tree_sequence</field>
+        </record>
+        <record model="ir.ui.view" id="default_bank_account_view_form">
+            <field name="model">party.party.default.bank_account</field>
+            <field name="type">form</field>
+            <field name="name">default_bank_account_form</field>
+        </record>
         <record model="ir.ui.view" id="party_view_form">
             <field name="model">party.party</field>
             <field name="inherit" ref="party.party_view_form"/>
