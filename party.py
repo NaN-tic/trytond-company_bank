@@ -4,7 +4,7 @@
 from trytond.model import fields, ModelSQL, ModelView, MatchMixin,\
     sequence_ordered
 from trytond.pool import PoolMeta
-from trytond.pyson import Eval, Len
+from trytond.pyson import Eval
 from trytond.transaction import Transaction
 
 __all__ = ['PartyDefaultBankAccount', 'Party']
@@ -56,22 +56,14 @@ class Party:
     __metaclass__ = PoolMeta
     __name__ = 'party.party'
     default_bank_accounts = fields.One2Many('party.party.default.bank_account',
-        'party', 'Default Bank Accounts',
-        states={
-            'invisible': Len(Eval('bank_accounts', [])) < 2,
-            },
-        depends=['bank_accounts'])
+        'party', 'Default Bank Accounts')
     company_default_bank_accounts = fields.Function(
         fields.One2Many('party.party.default.bank_account',
             'party', 'Default Bank Accounts',
             domain=[
                 ('company', 'in',
                     [None, Eval('context', {}).get('company', -1)]),
-                ],
-            states={
-                'invisible': Len(Eval('bank_accounts', [])) < 2,
-                },
-            depends=['bank_accounts']),
+                ]),
         'get_company_default_bank_accounts',
         setter='set_company_default_bank_accounts')
 
