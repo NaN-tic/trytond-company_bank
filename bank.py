@@ -34,7 +34,7 @@ class BankAccountParty:
             column = '%s_bank_account' % kind
             if table.column_exist(column):
                 select = sql_table.select(Literal(0), CurrentTimestamp(),
-                            sql_table.id, Literal(kind),
+                            sql_table.account, Literal(kind),
                             sql_table.owner, sql_table.company,
                             where=getattr(sql_table, column))
                 cursor.execute(*default_bank.insert(
