@@ -57,6 +57,10 @@ class Party:
     __name__ = 'party.party'
     default_bank_accounts = fields.One2Many('party.party.default.bank_account',
         'party', 'Default Bank Accounts')
+    payable_bank_account = fields.Function(fields.Many2One('bank.account',
+        'Default Payable Bank Account'), 'get_bank_account')
+    receivable_bank_account = fields.Function(fields.Many2One('bank.account',
+        'Default Receivable Bank Account'), 'get_bank_account')
     company_default_bank_accounts = fields.Function(
         fields.One2Many('party.party.default.bank_account',
             'party', 'Default Bank Accounts',
@@ -66,6 +70,10 @@ class Party:
                 ]),
         'get_company_default_bank_accounts',
         setter='set_company_default_bank_accounts')
+    payable_company_bank_account = fields.Function(fields.Many2One('bank.account',
+        'Default Company Payable Bank Account'), 'get_bank_account')
+    receivable_company_bank_account = fields.Function(fields.Many2One('bank.account',
+        'Default Company Receivable Bank Account'), 'get_bank_account')
 
     def get_company_default_bank_accounts(self, name):
         company = Transaction().context.get('company', -1)
@@ -75,6 +83,23 @@ class Party:
     @classmethod
     def set_company_default_bank_accounts(cls, parties, name, value):
         cls.write(parties, {'default_bank_accounts': value})
+
+    @classmethod
+    def get_bank_account(cls, parties, names):
+        res = {n: {p.id: None for p in parties} for n in names}
+        for name in names:
+            kind = name[:-13]
+            for party in parties:
+                if kind.endswith('_company'):
+                    ba = None
+                    for cba in party.company_default_bank_accounts:
+                        if cba and (cba.kind == kind[:-8]):
+                            ba = cba
+                            break
+                else:
+                    ba = party.get_default_bank_account(pattern={'kind': kind})
+                res[name][party.id] = ba and ba.id or None
+        return res
 
     def get_default_bank_account(self, pattern=None):
         'Get the default bank account of a party'
