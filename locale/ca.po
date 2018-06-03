@@ -32,7 +32,7 @@ msgstr "Usuari de creació"
 
 msgctxt "field:party.party.default.bank_account,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:party.party.default.bank_account,kind:"
 msgid "Kind"
@@ -52,11 +52,11 @@ msgstr "Seqüència"
 
 msgctxt "field:party.party.default.bank_account,write_date:"
 msgid "Write Date"
-msgstr "Data modificación"
+msgstr "Data de modificació"
 
 msgctxt "field:party.party.default.bank_account,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt "model:party.party.default.bank_account,name:"
 msgid "Party Default Bank Account"
