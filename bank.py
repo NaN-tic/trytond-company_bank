@@ -11,8 +11,7 @@ from trytond import backend
 __all__ = ['BankAccountParty']
 
 
-class BankAccountParty:
-    __metaclass__ = PoolMeta
+class BankAccountParty(metaclass=PoolMeta):
     __name__ = 'bank.account-party.party'
 
     @classmethod

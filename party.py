@@ -52,8 +52,7 @@ class PartyDefaultBankAccount(sequence_ordered(), ModelSQL, ModelView,
         return [('bank_account.active',) + tuple(clause[1:])]
 
 
-class Party:
-    __metaclass__ = PoolMeta
+class Party(metaclass=PoolMeta):
     __name__ = 'party.party'
     default_bank_accounts = fields.One2Many('party.party.default.bank_account',
         'party', 'Default Bank Accounts')
