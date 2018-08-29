@@ -8,8 +8,7 @@ from trytond.transaction import Transaction
 __all__ = ['BankAccount', 'BankAccountParty']
 
 
-class BankAccount:
-    __metaclass__ = PoolMeta
+class BankAccount(metaclass=PoolMeta):
     __name__ = 'bank.account'
 
     @classmethod

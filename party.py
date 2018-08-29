@@ -182,7 +182,7 @@ class Party(metaclass=PoolMeta):
                     if value:
                         res['%s_company_bank_account' % name][party_id] = (
                             value.id)
-        for key in res.keys():
+        for key in list(res.keys()):
             if key not in names:
                 del res[key]
         return res
