@@ -8,7 +8,8 @@ from . import party
 
 def register():
     Pool.register(
-        party.PartyDefaultBankAccount,
+        bank.BankAccount,
         bank.BankAccountParty,
+        party.PartyCompanyBankAccount,
         party.Party,
         module='company_bank', type_='model')
