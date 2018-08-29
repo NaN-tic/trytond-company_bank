@@ -2,74 +2,90 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "field:party.party,default_bank_accounts:"
-msgid "Default Bank Accounts"
-msgstr "Cuentas bancarias por defecto"
+msgctxt "error:party.party-company.company:"
+msgid "Party must be unique per company."
+msgstr "El tercero debe ser único por empresa."
 
-msgctxt "field:party.party.default.bank_account,active:"
-msgid "Active"
-msgstr "Activo"
-
-msgctxt "field:party.party.default.bank_account,bank_account:"
-msgid "Bank Account"
-msgstr "Cuenta bancaria"
-
-msgctxt "field:party.party.default.bank_account,bank_account_owner:"
-msgid "Bank Account Owner"
-msgstr "Propietario de la cuenta bancaria"
-
-msgctxt "field:party.party.default.bank_account,company:"
+msgctxt "field:bank.account-party.party,company:"
 msgid "Company"
 msgstr "Empresa"
 
-msgctxt "field:party.party.default.bank_account,create_date:"
+msgctxt "field:bank.account-party.party,payable_bank_account:"
+msgid "Default Payable Bank Account"
+msgstr "Cuenta bancaria de pago por defecto"
+
+msgctxt "field:bank.account-party.party,receivable_bank_account:"
+msgid "Default Receivable Bank Account"
+msgstr "Cuenta bancaria de cobro por defecto"
+
+msgctxt "field:party.party,bank_accounts_readonly:"
+msgid "Default Accounts Readonly"
+msgstr "Cuentas por defecto solo lectura"
+
+msgctxt "field:party.party,company_party:"
+msgid "Company Party"
+msgstr "Tercero de la empresa"
+
+msgctxt "field:party.party,payable_bank_account:"
+msgid "Default payable bank account"
+msgstr "Cuenta bancaria de pago por defecto"
+
+msgctxt "field:party.party,payable_company_bank_account:"
+msgid "Default company payable bank account"
+msgstr "Cuenta bancaria de la empresa de pago por defecto"
+
+msgctxt "field:party.party,receivable_bank_account:"
+msgid "Default receivable bank account"
+msgstr "Cuenta bancaria de cobro por defecto"
+
+msgctxt "field:party.party,receivable_company_bank_account:"
+msgid "Default company receivable bank account"
+msgstr "Cuenta bancaria de la empresa de cobro por defecto"
+
+msgctxt "field:party.party-company.company,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:party.party-company.company,company_party:"
+msgid "Company Party"
+msgstr "Tercero de la empresa"
+
+msgctxt "field:party.party-company.company,create_date:"
 msgid "Create Date"
 msgstr "Fecha de creación"
 
-msgctxt "field:party.party.default.bank_account,create_uid:"
+msgctxt "field:party.party-company.company,create_uid:"
 msgid "Create User"
 msgstr "Usuario de creación"
 
-msgctxt "field:party.party.default.bank_account,id:"
+msgctxt "field:party.party-company.company,id:"
 msgid "ID"
 msgstr "ID"
 
-msgctxt "field:party.party.default.bank_account,kind:"
-msgid "Kind"
-msgstr "Tipo"
-
-msgctxt "field:party.party.default.bank_account,party:"
+msgctxt "field:party.party-company.company,party:"
 msgid "Party"
 msgstr "Tercero"
 
-msgctxt "field:party.party.default.bank_account,rec_name:"
-msgid "Name"
-msgstr "Nombre"
+msgctxt "field:party.party-company.company,payable_bank_account:"
+msgid "Payable bank account"
+msgstr "Cuenta bancaria a pagar"
 
-msgctxt "field:party.party.default.bank_account,sequence:"
-msgid "Sequence"
-msgstr "Secuencia"
+msgctxt "field:party.party-company.company,rec_name:"
+msgid "Record Name"
+msgstr "Nombre registro"
 
-msgctxt "field:party.party.default.bank_account,write_date:"
+msgctxt "field:party.party-company.company,receivable_bank_account:"
+msgid "Receivable bank account"
+msgstr "Cuenta bancaria a cobrar"
+
+msgctxt "field:party.party-company.company,write_date:"
 msgid "Write Date"
 msgstr "Fecha de modificación"
 
-msgctxt "field:party.party.default.bank_account,write_uid:"
+msgctxt "field:party.party-company.company,write_uid:"
 msgid "Write User"
 msgstr "Usuario de modificación"
 
-msgctxt "model:party.party.default.bank_account,name:"
-msgid "Party Default Bank Account"
-msgstr "Cuentas bancarias por defecto del tercero"
-
-msgctxt "selection:party.party.default.bank_account,kind:"
-msgid ""
-msgstr ""
-
-msgctxt "selection:party.party.default.bank_account,kind:"
-msgid "Payable"
-msgstr "A pagar"
-
-msgctxt "selection:party.party.default.bank_account,kind:"
-msgid "Receivable"
-msgstr "A cobrar"
+msgctxt "model:party.party-company.company,name:"
+msgid "Company Bank Account per Party"
+msgstr "Cuenta bancaria de la empresa por tercero"
