@@ -59,19 +59,13 @@ class Party(metaclass=PoolMeta):
     __name__ = 'party.party'
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party'), 'get_company_party')
-    bank_accounts_readonly = fields.Function(fields.Boolean(
-            'Default Accounts Readonly'),
-        'on_change_with_bank_accounts_readonly')
     payable_bank_account = fields.Function(fields.Many2One('bank.account',
             'Default payable bank account',
             domain=[
                 ('active', '=', True),
                 ('owners', '=', Eval('id')),
                 ],
-            states={
-                'readonly': Eval('bank_accounts_readonly', False),
-                },
-            depends=['id', 'bank_accounts_readonly']),
+            depends=['id']),
         'get_bank_account', setter='set_bank_accounts')
     receivable_bank_account = fields.Function(fields.Many2One('bank.account',
             'Default receivable bank account',
@@ -79,10 +73,7 @@ class Party(metaclass=PoolMeta):
                 ('active', '=', True),
                 ('owners', '=', Eval('id')),
                 ],
-            states={
-                'readonly': Eval('bank_accounts_readonly', False),
-                },
-            depends=['id', 'bank_accounts_readonly']),
+            depends=['id']),
         'get_bank_account', setter='set_bank_accounts')
     payable_company_bank_account = fields.Function(
         fields.Many2One('bank.account',
@@ -104,18 +95,6 @@ class Party(metaclass=PoolMeta):
         if company_id:
             company = Company(company_id)
             return company.party.id
-
-    @classmethod
-    def default_bank_accounts_readonly(cls):
-        return True
-
-    @fields.depends('bank_accounts')
-    def on_change_with_bank_accounts_readonly(self, name=None):
-        pool = Pool()
-        BankAccount = pool.get('bank.account')
-        active_accounts = [ba for ba in self.bank_accounts
-            if getattr(ba, 'active', BankAccount.default_active())]
-        return len(active_accounts) < 2
 
     def get_company_party(self, name):
         return self.default_company_party()
