@@ -38,13 +38,11 @@ class CompanyBankTestCase(ModuleTestCase):
             owner.save()
             self.assertIsNone(owner.payable_bank_account)
             self.assertIsNone(owner.receivable_bank_account)
-            self.assertTrue(owner.bank_accounts_readonly)
             account.owners = [owner]
             account.save()
             owner = Party(owner.id)
             self.assertEqual(owner.payable_bank_account, account)
             self.assertEqual(owner.receivable_bank_account, account)
-            self.assertTrue(owner.bank_accounts_readonly)
             new_account, = Account.create([{
                         'bank': bank.id,
                         'owners': [('add', [owner.id])],
@@ -56,17 +54,14 @@ class CompanyBankTestCase(ModuleTestCase):
             owner = Party(owner.id)
             self.assertEqual(owner.payable_bank_account, account)
             self.assertEqual(owner.receivable_bank_account, account)
-            self.assertFalse(owner.bank_accounts_readonly)
             Account.delete([account])
             owner = Party(owner.id)
             self.assertEqual(owner.payable_bank_account, new_account)
             self.assertEqual(owner.receivable_bank_account, new_account)
-            self.assertTrue(owner.bank_accounts_readonly)
             new_account.owners = []
             new_account.save()
             self.assertIsNone(owner.payable_bank_account)
             self.assertIsNone(owner.receivable_bank_account)
-            self.assertTrue(owner.bank_accounts_readonly)
             new_account.owners = [owner]
             new_account.save()
             account, = Account.create([{
@@ -79,17 +74,14 @@ class CompanyBankTestCase(ModuleTestCase):
                         }])
             self.assertEqual(owner.payable_bank_account, new_account)
             self.assertEqual(owner.receivable_bank_account, new_account)
-            self.assertFalse(owner.bank_accounts_readonly)
             new_account.active = False
             new_account.save()
             self.assertEqual(owner.payable_bank_account, account)
             self.assertEqual(owner.receivable_bank_account, account)
-            self.assertTrue(owner.bank_accounts_readonly)
             account.active = False
             account.save()
             self.assertIsNone(owner.payable_bank_account)
             self.assertIsNone(owner.receivable_bank_account)
-            self.assertTrue(owner.bank_accounts_readonly)
 
 
 def suite():
