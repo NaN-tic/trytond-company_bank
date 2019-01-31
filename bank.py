@@ -53,7 +53,8 @@ class BankAccountParty(metaclass=PoolMeta):
         company = Transaction().context.get('company')
         parties = set()
         for bank_account_party in bank_account_parties:
-            if bank_account_party.company.id != company:
+            if (bank_account_party.company
+                    and (bank_account_party.company.id != company)):
                 bank_account_parties.remove(bank_account_party)
             parties.add(bank_account_party.owner)
         super(BankAccountParty, cls).delete(bank_account_parties)
