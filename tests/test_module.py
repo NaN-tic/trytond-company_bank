@@ -1,16 +1,16 @@
-# This file is part of the company_bank module for Tryton.
-# The COPYRIGHT file at the top level of this repository contains the full
-# copyright notices and license terms.
-import unittest
-import trytond.tests.test_tryton
+
+# This file is part of Tryton.  The COPYRIGHT file at the top level of
+# this repository contains the full copyright notices and license terms.
+
 from trytond.tests.test_tryton import ModuleTestCase, with_transaction
 from trytond.pool import Pool
 
-from trytond.modules.company.tests import create_company, set_company
+from trytond.modules.company.tests import (CompanyTestMixin, create_company,
+    set_company)
 
 
-class CompanyBankTestCase(ModuleTestCase):
-    'Test Company Bank module'
+class CompanyBankTestCase(CompanyTestMixin, ModuleTestCase):
+    'Test CompanyBank module'
     module = 'company_bank'
 
     @with_transaction()
@@ -84,8 +84,4 @@ class CompanyBankTestCase(ModuleTestCase):
             self.assertIsNone(owner.receivable_bank_account)
 
 
-def suite():
-    suite = trytond.tests.test_tryton.suite()
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        CompanyBankTestCase))
-    return suite
+del ModuleTestCase
