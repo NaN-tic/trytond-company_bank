@@ -4,6 +4,7 @@
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
+from trytond.pyson import Eval
 
 __all__ = ['BankAccount', 'BankAccountParty']
 
@@ -32,6 +33,12 @@ class BankAccountParty(metaclass=PoolMeta):
         required=True)
     payable_bank_account = fields.Boolean('Default Payable Bank Account')
     receivable_bank_account = fields.Boolean('Default Receivable Bank Account')
+
+    @classmethod
+    def __setup__(cls):
+        super().__setup__()
+        cls.owner.context = {'company': Eval('company')}
+        cls.owner.depends.append('company')
 
     @staticmethod
     def default_company():
