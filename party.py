@@ -16,9 +16,17 @@ class PartyCompanyBankAccount(ModelSQL):
     company = fields.Many2One('company.company', 'Company', required=True,
         ondelete='CASCADE')
     company_party = fields.Function(fields.Many2One('party.party',
-            'Company Party'), 'get_company_party')
+            'Company Party',
+            context={
+                'company': Eval('company'),
+            },
+            depends=['company']), 'get_company_party')
     party = fields.Many2One('party.party', 'Party', required=True,
-        ondelete='CASCADE')
+        ondelete='CASCADE',
+        context={
+            'company': Eval('company'),
+        },
+        depends=['company'])
     receivable_bank_account = fields.Many2One('bank.account',
         'Receivable bank account',
         domain=[
