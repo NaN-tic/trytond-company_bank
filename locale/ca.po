@@ -2,90 +2,59 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "error:party.party-company.company:"
-msgid "Party must be unique per company."
-msgstr "El tercer ha de ser únic per empresa."
+msgctxt "field:party.party,company_bank_accounts:"
+msgid "Company Bank Accounts"
+msgstr "Comptes bancaris de l'empresa"
 
-msgctxt "field:bank.account-party.party,company:"
-msgid "Company"
-msgstr "Empresa"
+msgctxt "field:party.party,party_bank_accounts:"
+msgid "Party Bank Accounts"
+msgstr "Comptes bancaris del tercer"
 
-msgctxt "field:bank.account-party.party,payable_bank_account:"
+msgctxt "field:party.party,payable_bank_account:"
 msgid "Default Payable Bank Account"
 msgstr "Compte bancari de pagament per defecte"
 
-msgctxt "field:bank.account-party.party,receivable_bank_account:"
-msgid "Default Receivable Bank Account"
-msgstr "Compte bancari de cobrament per defecte"
-
-msgctxt "field:party.party,bank_accounts_readonly:"
-msgid "Default Accounts Readonly"
-msgstr "Comptes per defecte només lectura"
-
-msgctxt "field:party.party,company_party:"
-msgid "Company Party"
-msgstr "Tercer de l'empresa"
-
-msgctxt "field:party.party,payable_bank_account:"
-msgid "Default payable bank account"
-msgstr "Compte bancari de pagament per defecte"
-
 msgctxt "field:party.party,payable_company_bank_account:"
-msgid "Default company payable bank account"
+msgid "Default Company Payable Bank Account"
 msgstr "Compte bancari de l'empresa de pagament per defecte"
 
 msgctxt "field:party.party,receivable_bank_account:"
-msgid "Default receivable bank account"
+msgid "Default Receivable Bank Account"
 msgstr "Compte bancari de cobrament per defecte"
 
 msgctxt "field:party.party,receivable_company_bank_account:"
-msgid "Default company receivable bank account"
+msgid "Default Company Receivable Bank Account"
 msgstr "Compte bancari de l'empresa de cobrament per defecte"
 
-msgctxt "field:party.party-company.company,company:"
+msgctxt "field:party.party-bank.account-company,company:"
 msgid "Company"
 msgstr "Empresa"
 
-msgctxt "field:party.party-company.company,company_party:"
-msgid "Company Party"
-msgstr "Tercer de l'empresa"
+msgctxt "field:party.party-bank.account-company,company_bank_accounts:"
+msgid "Company Bank Accounts"
+msgstr "Comptes bancaris de l'empresa"
 
-msgctxt "field:party.party-company.company,create_date:"
-msgid "Create Date"
-msgstr "Data de creació"
-
-msgctxt "field:party.party-company.company,create_uid:"
-msgid "Create User"
-msgstr "Usuari de creació"
-
-msgctxt "field:party.party-company.company,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:party.party-company.company,party:"
+msgctxt "field:party.party-bank.account-company,party:"
 msgid "Party"
 msgstr "Tercer"
 
-msgctxt "field:party.party-company.company,payable_bank_account:"
+msgctxt "field:party.party-bank.account-company,payable_bank_account:"
 msgid "Payable bank account"
-msgstr "Compte bancari a pagar"
+msgstr "Compte bancari a pagar\""
 
-msgctxt "field:party.party-company.company,rec_name:"
-msgid "Record Name"
-msgstr "Nom registre"
+msgctxt "field:party.party-bank.account-company,payable_company_bank_account:"
+msgid "Company Payable bank account"
+msgstr "Compte bancari de l'empresa de pagament"
 
-msgctxt "field:party.party-company.company,receivable_bank_account:"
+msgctxt "field:party.party-bank.account-company,receivable_bank_account:"
 msgid "Receivable bank account"
 msgstr "Compte bancari a cobrar"
 
-msgctxt "field:party.party-company.company,write_date:"
-msgid "Write Date"
-msgstr "Data de modificació"
+msgctxt ""
+"field:party.party-bank.account-company,receivable_company_bank_account:"
+msgid "Company Receivable bank account"
+msgstr "Compte bancari de l'empresa de cobrament"
 
-msgctxt "field:party.party-company.company,write_uid:"
-msgid "Write User"
-msgstr "Usuari de modificació"
-
-msgctxt "model:party.party-company.company,name:"
-msgid "Company Bank Account per Party"
-msgstr "Compte bancari de l'empresa per tercer"
+msgctxt "model:party.party-bank.account-company,name:"
+msgid "Party Bank Account Company"
+msgstr "Comptes bancaris del tercer"
