@@ -11,8 +11,8 @@ from trytond.modules.company.model import (
 
 class CompanyBankAccountsMixin(object):
     __slots__ = ()
-    company_bank_accounts = fields.Function(fields.One2Many(
-        'bank.account', None, 'Company Bank Accounts'),
+    company_bank_accounts = fields.Function(fields.Many2Many(
+        'bank.account', None, None, 'Company Bank Accounts'),
         'get_company_bank_accounts', setter='set_company_bank_accounts')
 
     @classmethod
