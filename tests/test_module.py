@@ -20,6 +20,7 @@ class CompanyBankTestCase(CompanyTestMixin, ModuleTestCase):
         Party = pool.get('party.party')
         Bank = pool.get('bank')
         Account = pool.get('bank.account')
+        AccountNumber = pool.get('bank.account.number')
 
         company = create_company()
         with set_company(company):
@@ -74,10 +75,14 @@ class CompanyBankTestCase(CompanyTestMixin, ModuleTestCase):
                         }])
             self.assertEqual(owner.payable_bank_account, new_account)
             self.assertEqual(owner.receivable_bank_account, new_account)
+
+            AccountNumber.write([n for n in new_account.numbers], {'active': False})
             new_account.active = False
             new_account.save()
             self.assertEqual(owner.payable_bank_account, account)
             self.assertEqual(owner.receivable_bank_account, account)
+
+            AccountNumber.write([n for n in account.numbers], {'active': False})
             account.active = False
             account.save()
             self.assertIsNone(owner.payable_bank_account)
