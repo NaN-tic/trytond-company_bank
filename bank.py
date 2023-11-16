@@ -37,7 +37,7 @@ class BankAccountParty(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super().__setup__()
-        cls.owner.context = {'company': Eval('company')}
+        cls.owner.context = {'company': Eval('company', -1)}
         cls.owner.depends.append('company')
 
     @staticmethod
