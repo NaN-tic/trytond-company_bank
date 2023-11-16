@@ -18,13 +18,13 @@ class PartyCompanyBankAccount(ModelSQL):
     company_party = fields.Function(fields.Many2One('party.party',
             'Company Party',
             context={
-                'company': Eval('company'),
+                'company': Eval('company', -1),
             },
             depends=['company']), 'get_company_party')
     party = fields.Many2One('party.party', 'Party', required=True,
         ondelete='CASCADE',
         context={
-            'company': Eval('company'),
+            'company': Eval('company', -1),
         },
         depends=['company'])
     receivable_bank_account = fields.Many2One('bank.account',
