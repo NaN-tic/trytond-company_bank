@@ -43,22 +43,22 @@ class PartyBankAccountCompany(ModelSQL, CompanyBankAccountsMixin, CompanyValueMi
         'Receivable bank account',
         domain=[
             ('owners', '=', Eval('party')),
-        ], depends=['party'])
+        ])
     payable_bank_account = fields.Many2One('bank.account',
         'Payable bank account',
         domain=[
             ('owners', '=', Eval('party')),
-        ], depends=['party'])
+        ])
     receivable_company_bank_account = fields.Many2One('bank.account',
         'Company Receivable bank account',
         domain=[
             ('id', 'in', Eval('company_bank_accounts', [])),
-        ], depends=['company_bank_accounts'])
+        ])
     payable_company_bank_account = fields.Many2One('bank.account',
         'Company Payable bank account',
         domain=[
             ('id', 'in', Eval('company_bank_accounts', [])),
-        ], depends=['company_bank_accounts'])
+        ])
 
 
 class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta):
