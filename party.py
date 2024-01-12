@@ -73,8 +73,7 @@ class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta
                 ],
             states={
                 'invisible': (~Eval('context', {}).get('company')),
-                },
-            depends=['id']))
+                }))
     receivable_bank_account = fields.MultiValue(fields.Many2One('bank.account',
             'Default Receivable Bank Account',
             domain=[
@@ -83,8 +82,7 @@ class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta
                 ],
             states={
                 'invisible': (~Eval('context', {}).get('company')),
-                },
-            depends=['id']))
+                }))
     payable_company_bank_account = fields.MultiValue(fields.Many2One('bank.account',
             'Default Company Payable Bank Account',
             domain=[
@@ -93,8 +91,7 @@ class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta
                 ],
             states={
                 'invisible': (~Eval('context', {}).get('company')),
-                },
-            depends=['company_bank_accounts']))
+                }))
     receivable_company_bank_account = fields.MultiValue(fields.Many2One('bank.account',
             'Default Company Receivable Bank Account',
             domain=[
@@ -103,8 +100,7 @@ class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta
                 ],
             states={
                 'invisible': (~Eval('context', {}).get('company')),
-                },
-            depends=['company_bank_accounts']))
+                }))
 
     @classmethod
     def multivalue_model(cls, field):
