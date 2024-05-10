@@ -5,6 +5,7 @@ from trytond.model import fields, ModelSQL
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
+from trytond import backend
 from trytond.modules.company.model import (
     CompanyMultiValueMixin, CompanyValueMixin)
 
@@ -59,6 +60,14 @@ class PartyBankAccountCompany(ModelSQL, CompanyBankAccountsMixin, CompanyValueMi
         domain=[
             ('id', 'in', Eval('company_bank_accounts', [])),
         ], depends=['company_bank_accounts'])
+
+    @classmethod
+    def __register__(cls, module_name):
+        super().__register__(module_name)
+        table = backend.TableHandler(cls, module_name)
+
+        # Drop number_uniq constraint
+        table.drop_constraint('party_party-company_company_company_party_uniq')
 
 
 class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta):
