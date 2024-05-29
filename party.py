@@ -22,7 +22,7 @@ class CompanyBankAccountsMixin(object):
 
         company_id = Transaction().context.get('company')
         bank_accounts = ([x.id for x in Company(company_id).party.bank_accounts]
-            if company_id else None)
+            if company_id and company_id != -1 else None)
 
         return dict((x.id, bank_accounts) for x in records)
 
