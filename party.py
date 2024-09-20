@@ -20,9 +20,14 @@ class CompanyBankAccountsMixin(object):
     def get_company_bank_accounts(cls, records, name):
         Company = Pool().get('company.company')
 
+        bank_accounts = None
         company_id = Transaction().context.get('company')
-        bank_accounts = ([x.id for x in Company(company_id).party.bank_accounts]
-            if company_id and company_id != -1 else None)
+        if company_id:
+            company = Company(company_id)
+            company_bank_accounts = (hasattr(company, 'party')
+                and company.party.bank_accounts or [])
+            if company_bank_accounts:
+                bank_accounts = [x.id for x in company_bank_accounts]
 
         return dict((x.id, bank_accounts) for x in records)
 
@@ -124,8 +129,11 @@ class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta
         Company = Pool().get('company.company')
 
         company_id = Transaction().context.get('company')
-        return ([x.id for x in Company(company_id).party.bank_accounts]
-            if company_id else [])
+        if company_id:
+            company = Company(company_id)
+            bank_accounts = (hasattr(company, 'party')
+                and company.party.bank_accounts or [])
+            return [x.id for x in bank_accounts]
 
     @classmethod
     def set_default_bank_accounts(cls, parties):
