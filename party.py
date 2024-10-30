@@ -136,6 +136,20 @@ class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta
             return [x.id for x in bank_accounts]
 
     @classmethod
+    def copy(cls, parties, default=None):
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
+        # not copy bank accounts
+        default.setdefault('party_bank_accounts', None)
+        default.setdefault('receivable_bank_account', None)
+        default.setdefault('receivable_company_bank_account', None)
+        default.setdefault('payable_company_bank_account', None)
+        default.setdefault('payable_bank_account', None)
+        return super().copy(parties, default=default)
+
+    @classmethod
     def set_default_bank_accounts(cls, parties):
         for party in parties:
             if (party.receivable_bank_account

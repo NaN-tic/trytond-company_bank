@@ -88,5 +88,11 @@ class CompanyBankTestCase(CompanyTestMixin, ModuleTestCase):
             self.assertIsNone(owner.payable_bank_account)
             self.assertIsNone(owner.receivable_bank_account)
 
+            new_owner, = Party.copy([owner])
+            self.assertEqual(len(new_owner.party_bank_accounts), 0)
+            self.assertEqual(new_owner.receivable_bank_account, None)
+            self.assertEqual(new_owner.receivable_company_bank_account, None)
+            self.assertEqual(new_owner.payable_company_bank_account, None)
+            self.assertEqual(new_owner.payable_bank_account, None)
 
 del ModuleTestCase
