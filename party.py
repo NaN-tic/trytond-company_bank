@@ -5,7 +5,6 @@ from trytond.model import fields, ModelSQL
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
-from trytond import backend
 from trytond.modules.company.model import (
     CompanyMultiValueMixin, CompanyValueMixin)
 
@@ -69,7 +68,7 @@ class PartyBankAccountCompany(ModelSQL, CompanyBankAccountsMixin, CompanyValueMi
     @classmethod
     def __register__(cls, module_name):
         super().__register__(module_name)
-        table = backend.TableHandler(cls, module_name)
+        table = cls.__table_handler__(module_name)
 
         # Drop number_uniq constraint
         table.drop_constraint('party_party-company_company_company_party_uniq')
