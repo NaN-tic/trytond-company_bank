@@ -70,8 +70,9 @@ class PartyBankAccountCompany(ModelSQL, CompanyBankAccountsMixin, CompanyValueMi
         super().__register__(module_name)
         table = cls.__table_handler__(module_name)
 
-        # Drop number_uniq constraint
-        table.drop_constraint('party_party-company_company_company_party_uniq')
+        # Drop the constraint from the former value model.
+        table.drop_constraint(
+            'company_party_uniq', table='party_party-company_company')
 
 
 class Party(CompanyBankAccountsMixin, CompanyMultiValueMixin, metaclass=PoolMeta):
