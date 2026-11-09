@@ -1,0 +1,93 @@
+#
+msgid ""
+msgstr ""
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "field:party.party,company_bank_accounts:"
+msgid "Company Bank Accounts"
+msgstr "Vállalat bankszámlái"
+
+msgctxt "field:party.party,party_bank_accounts:"
+msgid "Party Bank Accounts"
+msgstr "Partner bankszámlái"
+
+msgctxt "field:party.party,payable_bank_account:"
+msgid "Default Payable Bank Account"
+msgstr "Alapértelmezett fizetési bankszámla"
+
+msgctxt "field:party.party,payable_company_bank_account:"
+msgid "Default Company Payable Bank Account"
+msgstr "Vállalat alapértelmezett fizetési bankszámlája"
+
+msgctxt "field:party.party,receivable_bank_account:"
+msgid "Default Receivable Bank Account"
+msgstr "Alapértelmezett bevételi bankszámla"
+
+msgctxt "field:party.party,receivable_company_bank_account:"
+msgid "Default Company Receivable Bank Account"
+msgstr "Vállalat alapértelmezett bevételi bankszámlája"
+
+msgctxt "field:party.party-bank.account-company,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:party.party-bank.account-company,company_bank_accounts:"
+msgid "Company Bank Accounts"
+msgstr "Vállalat bankszámlái"
+
+msgctxt "field:party.party-bank.account-company,party:"
+msgid "Party"
+msgstr "Ügyfél"
+
+msgctxt "field:party.party-bank.account-company,payable_bank_account:"
+msgid "Payable bank account"
+msgstr "Fizetési bankszámla"
+
+msgctxt "field:party.party-bank.account-company,payable_company_bank_account:"
+msgid "Company Payable bank account"
+msgstr "Vállalat fizetési bankszámlája"
+
+msgctxt "field:party.party-bank.account-company,receivable_bank_account:"
+msgid "Receivable bank account"
+msgstr "Bevételi bankszámla"
+
+msgctxt ""
+"field:party.party-bank.account-company,receivable_company_bank_account:"
+msgid "Company Receivable bank account"
+msgstr "Vállalat bevételi bankszámlája"
+
+msgctxt "model:party.party-bank.account-company,name:"
+msgid "Party Bank Account Company"
+msgstr "Partner bankszámlájának vállalata"
+
+msgctxt "field:bank.account-party.party,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:bank.account-party.party,payable_bank_account:"
+msgid "Default Payable Bank Account"
+msgstr "Alapértelmezett fizetési bankszámla"
+
+msgctxt "field:bank.account-party.party,receivable_bank_account:"
+msgid "Default Receivable Bank Account"
+msgstr "Alapértelmezett bevételi bankszámla"
+
+msgctxt "field:party.party-company.company,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:party.party-company.company,party:"
+msgid "Party"
+msgstr "Ügyfél"
+
+msgctxt "field:party.party-company.company,payable_bank_account:"
+msgid "Payable bank account"
+msgstr "Fizetési bankszámla"
+
+msgctxt "field:party.party-company.company,receivable_bank_account:"
+msgid "Receivable bank account"
+msgstr "Bevételi bankszámla"
